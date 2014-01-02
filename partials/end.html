@@ -4,5 +4,12 @@
     <li>Computer chose: {{comp}}</li>
   </ul>
   <p>{{message}}</p>
+  <p>{{scores}}</p>
   <button class="btn btn-primary" ng-click="click()">Play Again!</button>
+  <br>
+  <br>
+  <ul ng-repeat="player in db">
+  	<li>{{player.name}} won {{player.winCount}} times</li>
+  </ul>
+
 </div>

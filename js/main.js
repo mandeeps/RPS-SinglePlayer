@@ -10,12 +10,11 @@
   main = angular.module('RPS', []);
 
   main.service('sharedData', function() {
-    this.name = function() {
-      return 'name';
-    };
-    this.choice = function() {
-      return 'choice';
-    };
+    this.name = 'name';
+    this.choice = 'choice';
+    this.winCount = 0;
+    this.lossCount = 0;
+    this.tieCount = 0;
     return this.view = 'partials/about.html';
   });
 
@@ -23,13 +22,21 @@
     return $scope.data = sharedData;
   });
 
-  main.controller('AskName', function($scope, sharedData) {
+  main.controller('AskName', function($scope, sharedData, $http) {
     $scope.message = 'Hello, what is your name?';
     $scope.name = 'Player';
     return $scope.submit = function() {
       if ($scope.name != null) {
         sharedData.name = $scope.name;
       }
+      $http.put('https://limitless-bastion-8408.herokuapp.com/api/players/' + sharedData.name).success(function(data) {
+        console.log('Succcess: ' + data);
+        sharedData.winCount = data.winCount;
+        sharedData.lossCount = data.lossCount;
+        return sharedData.tieCount = data.tieCount;
+      }).error(function(err) {
+        return console.log('Error getting this players data: ' + err);
+      });
       if ($scope.name != null) {
         return sharedData.view = 'partials/choice.html';
       }
@@ -58,7 +65,7 @@
     };
   });
 
-  main.controller('Final', function($scope, sharedData) {
+  main.controller('Final', function($scope, sharedData, $http) {
     var rand, result, select;
     $scope.name = sharedData.name;
     $scope.choice = sharedData.choice;
@@ -67,26 +74,47 @@
     $scope.comp = select[rand];
     if (sharedData.choice === $scope.comp) {
       result = 'tied';
+      sharedData.tieCount++;
     }
     if (sharedData.choice === 'rock' && $scope.comp === 'paper') {
       result = 'lose';
+      sharedData.lossCount++;
     }
     if (sharedData.choice === 'rock' && $scope.comp === 'scissors') {
       result = 'win';
+      sharedData.winCount++;
     }
     if (sharedData.choice === 'paper' && $scope.comp === 'rock') {
       result = 'win';
+      sharedData.winCount++;
     }
     if (sharedData.choice === 'paper' && $scope.comp === 'scissors') {
       result = 'lose';
+      sharedData.lossCount++;
     }
     if (sharedData.choice === 'scissors' && $scope.comp === 'rock') {
       result = 'lose';
+      sharedData.lossCount++;
     }
     if (sharedData.choice === 'scissors' && $scope.comp === 'paper') {
       result = 'win';
+      sharedData.winCount++;
     }
     $scope.message = sharedData.name + ', you ' + result + '!';
+    $scope.scores = 'Won: ' + sharedData.winCount + ' Lost: ' + sharedData.lossCount + ' Tied: ' + sharedData.tieCount;
+    $http.post('https://limitless-bastion-8408.herokuapp.com/api/players', {
+      'name': sharedData.name,
+      'winCount': sharedData.winCount,
+      'lossCount': sharedData.lossCount,
+      'tieCount': sharedData.tieCount
+    }).error(function(err) {
+      return console.log(err);
+    });
+    $http.get('https://limitless-bastion-8408.herokuapp.com/api/players').success(function(data) {
+      return $scope.db = data;
+    }).error(function(err) {
+      return console.log('Error getting list of players: ' + err);
+    });
     return $scope.click = function() {
       return sharedData.view = 'partials/choice.html';
     };
