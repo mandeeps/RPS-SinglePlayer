@@ -29,7 +29,7 @@
       if ($scope.name != null) {
         sharedData.name = $scope.name;
       }
-      $http.put('https://limitless-bastion-8408.herokuapp.com/api/players/' + sharedData.name).success(function(data) {
+      $http.put('https://mean-rps.herokuapp.com/api/players/' + sharedData.name).success(function(data) {
         console.log('Succcess: ' + data);
         sharedData.winCount = data.winCount;
         sharedData.lossCount = data.lossCount;
@@ -102,7 +102,7 @@
     }
     $scope.message = sharedData.name + ', you ' + result + '!';
     $scope.scores = 'Won: ' + sharedData.winCount + ' Lost: ' + sharedData.lossCount + ' Tied: ' + sharedData.tieCount;
-    $http.post('https://limitless-bastion-8408.herokuapp.com/api/players', {
+    $http.post('https://mean-rps.herokuapp.com/api/players', {
       'name': sharedData.name,
       'winCount': sharedData.winCount,
       'lossCount': sharedData.lossCount,
@@ -110,7 +110,7 @@
     }).error(function(err) {
       return console.log(err);
     });
-    $http.get('https://limitless-bastion-8408.herokuapp.com/api/players').success(function(data) {
+    $http.get('https://mean-rps.herokuapp.com/api/players').success(function(data) {
       return $scope.db = data;
     }).error(function(err) {
       return console.log('Error getting list of players: ' + err);

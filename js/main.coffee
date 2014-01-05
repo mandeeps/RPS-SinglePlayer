@@ -22,7 +22,7 @@ main.controller 'AskName', ($scope, sharedData, $http) ->
   $scope.name = 'Player'
   $scope.submit = ->
     sharedData.name = $scope.name if $scope.name?
-    $http.put('https://limitless-bastion-8408.herokuapp.com/api/players/' + sharedData.name)
+    $http.put('https://mean-rps.herokuapp.com/api/players/' + sharedData.name)
     .success (data) ->
       console.log 'Succcess: ' + data
       sharedData.winCount = data.winCount
@@ -64,10 +64,10 @@ main.controller 'Final', ($scope, sharedData, $http) ->
   if sharedData.choice is 'scissors' and $scope.comp is 'paper' then result = 'win'; sharedData.winCount++
   $scope.message = sharedData.name + ', you ' + result + '!'
   $scope.scores = 'Won: ' + sharedData.winCount + ' Lost: ' + sharedData.lossCount + ' Tied: ' + sharedData.tieCount
-  $http.post('https://limitless-bastion-8408.herokuapp.com/api/players', {'name':sharedData.name,'winCount':sharedData.winCount,'lossCount':sharedData.lossCount,'tieCount':sharedData.tieCount})
+  $http.post('https://mean-rps.herokuapp.com/api/players', {'name':sharedData.name,'winCount':sharedData.winCount,'lossCount':sharedData.lossCount,'tieCount':sharedData.tieCount})
   .error (err) ->
     console.log err
-  $http.get('https://limitless-bastion-8408.herokuapp.com/api/players')
+  $http.get('https://mean-rps.herokuapp.com/api/players')
   .success (data) ->
     $scope.db = data
   .error (err) ->
