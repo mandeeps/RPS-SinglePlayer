@@ -6,7 +6,7 @@
 <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id = "com.mandeepshergill.rps"
-        version = "0.1">
+        version = "0.1.1">
 
     <name>MEAN Rock Paper Scissors</name>
 
@@ -18,7 +18,7 @@
         Mandeep Shergill
     </author>
     
-    <preference name="phonegap-version" value="cli-6.0.0" />
+    <preference name="phonegap-version" value="6.0.0" />
     <preference name="load-url-timeout" value="60000" />
     <preference name="permissions" value="none"/>
     <preference name="fullscreen" value="false" />
